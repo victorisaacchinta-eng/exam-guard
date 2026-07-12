@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Exam Guard — Cardano-Sealed Verification</title>
+<style>
+  :root{
+    --glass: rgba(255,255,255,0.06);
+    --glass-brd: rgba(255,255,255,0.14);
+    --ink:#f2f4f8;
+    --dim: rgba(242,244,248,0.6);
+    --green:#34d399;
+    --red:#fb7185;
+    --accent1:#2563eb;
+    --accent2:#14b8a6;
+    --accent3:#7c3aed;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;}
+  body{
+    background:#050609;
+    color:var(--ink);
+    font-family: -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow-x:hidden;
+    padding:40px 20px;
+    position:relative;
+  }
+  .orb{ position:fixed; border-radius:50%; filter:blur(90px); opacity:0.55; z-index:0; animation: float 16s ease-in-out infinite; }
+  .orb1{ width:420px;height:420px; background:var(--accent1); top:-120px; left:-100px; animation-delay:0s;}
+  .orb2{ width:380px;height:380px; background:var(--accent3); bottom:-140px; right:-80px; animation-delay:3s;}
+  .orb3{ width:280px;height:280px; background:var(--accent2); top:40%; left:60%; animation-delay:6s;}
+  @keyframes float{ 0%,100%{ transform:translate(0,0) scale(1); } 33%{ transform:translate(30px,-40px) scale(1.08); } 66%{ transform:translate(-25px,30px) scale(0.95); } }
+  .stage{ position:relative; z-index:1; width:100%; max-width:620px; }
+  .badge{ display:inline-flex; align-items:center; gap:8px; font-size:11.5px; letter-spacing:0.14em; text-transform:uppercase; color:var(--dim); background:var(--glass); border:1px solid var(--glass-brd); padding:6px 14px; border-radius:30px; backdrop-filter: blur(12px); margin-bottom:22px; }
+  .badge .dot{ width:6px;height:6px;border-radius:50%; background:var(--green); box-shadow:0 0 8px var(--green); animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+  h1{ font-size:38px; line-height:1.15; font-weight:700; margin:0 0 12px; background:linear-gradient(120deg, #fff 20%, #a9b6cc 55%, #fff 80%); background-size:200% auto; -webkit-background-clip:text; background-clip:text; color:transparent; animation: shine 6s linear infinite; }
+  @keyframes shine{ to{ background-position:200% center; } }
+  p.sub{ color:var(--dim); font-size:15px; line-height:1.6; max-width:48ch; margin:0 0 34px; }
+  .card{ background:var(--glass); border:1px solid var(--glass-brd); border-radius:20px; backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px); padding:8px; box-shadow: 0 20px 60px rgba(0,0,0,0.45); margin-bottom:18px; }
+  .card-inner{ padding:26px; }
+  .dropzone{ border:1.5px dashed rgba(255,255,255,0.22); border-radius:14px; padding:38px 20px; text-align:center; cursor:pointer; transition: all .25s ease; }
+  .dropzone:hover, .dropzone.drag{ border-color: var(--accent2); background: rgba(20,184,166,0.06); transform: translateY(-2px); }
+  .dropzone p{margin:0; font-size:14.5px; color:var(--ink);}
+  .dropzone .hint{font-size:12px;color:var(--dim); margin-top:6px;}
+  .dropzone .filename{ font-family: 'SF Mono', Menlo, monospace; font-size:12.5px; color:var(--accent2); margin-top:12px; word-break:break-all; }
+  input[type=file]{display:none;}
+  .fields{ margin-top:22px; padding-top:20px; border-top:1px solid var(--glass-brd); font-family:'SF Mono', Menlo, monospace; font-size:12px; color:var(--dim); display:grid; gap:10px; }
+  .fields div b{ color:var(--ink); font-weight:500; }
+  .fields .k{ color:var(--dim); display:inline-block; width:120px; }
+  .result{ display:none; margin-top:8px; }
+  .result.show{display:block; animation: rise .5s ease;}
+  @keyframes rise{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+  .verdict{ display:flex; align-items:center; gap:16px; padding:20px; border-radius:14px; border:1px solid; }
+  .verdict.pass{ background:rgba(52,211,153,0.09); border-color:rgba(52,211,153,0.35); }
+  .verdict.fail{ background:rgba(251,113,133,0.09); border-color:rgba(251,113,133,0.35); }
+  .ring{ width:46px;height:46px;border-radius:50%; display:flex;align-items:center;justify-content:center; flex-shrink:0; position:relative; }
+  .ring.pass{ background:radial-gradient(circle, rgba(52,211,153,0.25), transparent 70%); }
+  .ring.fail{ background:radial-gradient(circle, rgba(251,113,133,0.25), transparent 70%); }
+  .ring svg{ width:26px; height:26px; }
+  .ring.pass svg{ stroke: var(--green); }
+  .ring.fail svg{ stroke: var(--red); }
+  .ring path{ stroke-dasharray: 30; stroke-dashoffset: 30; animation: draw .5s ease forwards .15s; }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+  .verdict .text b{ display:block; font-size:15.5px; }
+  .verdict.pass .text b{ color:var(--green); }
+  .verdict.fail .text b{ color:var(--red); }
+  .verdict .text span{ display:block; font-size:12.5px; color:var(--dim); margin-top:3px; }
+  .txlink{ display:inline-flex; align-items:center; gap:6px; margin-top:16px; font-size:12.5px; color:var(--accent2); text-decoration:none; font-weight:600; }
+  .txlink:hover{ text-decoration:underline; }
+  footer{ text-align:center; color:var(--dim); font-size:11.5px; margin-top:22px; }
+</style>
+</head>
+<body>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+<div class="stage">
+  <div class="badge"><span class="dot"></span> Cardano Preprod &middot; Live Ledger Record</div>
+  <h1>Exam Guard</h1>
+  <p class="sub">Every exam paper is fingerprinted and permanently sealed on the Cardano blockchain before it's ever distributed. Drop a file below to verify it against that seal — instantly, publicly, unforgeably.</p>
+  <div class="card">
+    <div class="card-inner">
+      <div class="dropzone" id="dz">
+        <p>Click to select a file, or drag it here</p>
+        <div class="hint">Fingerprinted locally in your browser — nothing is uploaded</div>
+        <div class="filename" id="fname"></div>
+      </div>
+      <input type="file" id="fileInput">
+      <div class="fields">
+        <div><span class="k">Examination</span><b>Physics Mid-Sem 2026</b></div>
+        <div><span class="k">Sealed on</span><b>12 Jul 2026, 12:30:14 PM</b></div>
+        <div><span class="k">Fingerprint</span><b>ee47d1da&hellip;ddc3c581</b></div>
+      </div>
+      <div class="result" id="result"></div>
+    </div>
+  </div>
+  <footer>Powered by a permanent, publicly auditable Cardano transaction.</footer>
+</div>
+<script>
+const KNOWN_FINGERPRINT = "ee47d1dab3dd41ada1687923306bd864523bf1ac53269fb681e183e6ddc3c581";
+const TX_HASH = "2359d5ee55cd58ff614cc364c35dbc42d29df79a67d278323c40091247ae752b";
+const dz = document.getElementById('dz');
+const fileInput = document.getElementById('fileInput');
+const fname = document.getElementById('fname');
+const result = document.getElementById('result');
+dz.addEventListener('click', () => fileInput.click());
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('drag'));
+dz.addEventListener('drop', e => {
+  e.preventDefault();
+  dz.classList.remove('drag');
+  if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+});
+fileInput.addEventListener('change', e => {
+  if (e.target.files.length) handleFile(e.target.files[0]);
+});
+async function handleFile(file){
+  fname.textContent = "Selected: " + file.name;
+  result.classList.remove('show');
+  result.innerHTML = '';
+  const buf = await file.arrayBuffer();
+  const digest = await crypto.subtle.digest('SHA-256', buf);
+  const hex = Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2,'0')).join('');
+  const match = hex === KNOWN_FINGERPRINT;
+  setTimeout(() => {
+    if (match) {
+      result.innerHTML = '<div class="verdict pass"><div class="ring pass"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></div><div class="text"><b>Verified — Untampered</b><span>Fingerprint matches the record sealed on-chain</span></div></div><a class="txlink" href="https://preprod.cardanoscan.io/transaction/' + TX_HASH + '" target="_blank">View permanent record on Cardanoscan →</a>';
+    } else {
+      result.innerHTML = '<div class="verdict fail"><div class="ring fail"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></div><div class="text"><b>Failed — Not Authentic</b><span>This file does not match the sealed fingerprint</span></div></div>';
+    }
+    result.classList.add('show');
+  }, 450);
+}
+</script>
+</body>
+</html>
