@@ -9,7 +9,7 @@
 [![Cardano](https://img.shields.io/badge/Built%20on-Cardano-0033AD?style=for-the-badge&logo=cardano&logoColor=white)](https://cardano.org/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow?style=for-the-badge&logo=javascript)](https://developer.mozilla.org/)
 [![Python](https://img.shields.io/badge/Python-3.x-blue?style=for-the-badge&logo=python)](https://python.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-Mesh_%2B_Blockfrost-green?style=for-the-badge&logo=node.js)](https://nodejs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-Backend-green?style=for-the-badge&logo=node.js)](https://nodejs.org/)
 
 ### 🌐 Live Demo
 https://exam-guard-omega.vercel.app/
@@ -58,7 +58,7 @@ Exam Guard replaces trust with **cryptographic proof.**
 
 # 💡 Our Solution
 
-Exam Guard uses the immutability of the **Cardano Blockchain** as the trusted record for verification.
+Exam Guard leverages the security and immutability of the **Cardano Blockchain** to create a trusted verification system.
 
 ### Workflow
 
@@ -132,7 +132,7 @@ Authentic ✅   or   Tampered ❌
 | HTML | Frontend UI |
 | JavaScript | Client Logic |
 | Python | Hash Verification |
-| Node.js | Cardano transaction script (`push_to_chain.js`) |
+| Node.js | Backend Services |
 | SHA-256 | Cryptographic Hashing |
 | Cardano | Immutable Storage |
 | Vercel | Deployment |
@@ -145,6 +145,7 @@ Authentic ✅   or   Tampered ❌
 Exam Guard
 │
 ├── index.html
+├── pitch.html
 ├── hash_check.py
 ├── push_to_chain.js
 ├── package.json
@@ -209,7 +210,7 @@ Matching hashes indicate authenticity.
 
 # 🏆 Built For
 
-**IndiaCodeX'26 Cardano Hackathon**
+**IndiaCodeX'26 — Cardano Hackathon**
 
 Developed to demonstrate how blockchain technology can improve trust, transparency, and integrity in educational systems.
 
