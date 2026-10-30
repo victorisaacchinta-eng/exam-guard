@@ -1,0 +1,25 @@
+{
+  "network": "preprod",
+  "demo": {
+    "seal": "physics-midsem-2026",
+    "original": "samples/physics-midsem-2026.pdf",
+    "tampered": "samples/physics-midsem-2026-tampered.pdf"
+  },
+  "issuers": {
+    "team-pragmatic": {
+      "name": "Team Pragmatic test wallet (IndiaCodeX'26)",
+      "address": "addr_test1qrypdw0wy7s9raumq7wm5aujgzsp3xd7nq8znwseksdc0wjjk4hgnxsn5eeazzev68paxg3wsaw2l53ur9yy250934ssr9hd0f"
+    }
+  },
+  "seals": [
+    {
+      "id": "physics-midsem-2026-hackathon",
+      "exam": "Physics Mid-Sem 2026",
+      "note": "First seal, written during the IndiaCodeX'26 hackathon. The sealed file is a placeholder document, not a real paper, so it is not published here.",
+      "fingerprint": "ee47d1dab3dd41ada1687923306bd864523bf1ac53269fb681e183e6ddc3c581",
+      "tx": "2359d5ee55cd58ff614cc364c35dbc42d29df79a67d278323c40091247ae752b",
+      "issuer": "team-pragmatic",
+      "sample": null
+    }
+  ]
+}
