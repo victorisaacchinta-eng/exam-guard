@@ -23,7 +23,10 @@ project explanation: https://drive.google.com/file/d/1-dGr4JPrZXWST7tjCecA-65Whl
 
 ---
 
-![Exam Guard home page](docs/screenshots/home.png)
+<p align="center">
+  <img src="docs/media/seal-intact.gif" alt="Checking the sealed paper: the file is fingerprinted in the browser, the answer sheet fills in, the seal is read from Cardano and the verdict is Seal intact" width="900">
+  <br><sub>The sealed paper, checked live against its Cardano transaction. 64 of 64 characters match.</sub>
+</p>
 
 # 📖 Overview
 
@@ -102,7 +105,21 @@ Authentic ✅   or   Tampered ❌
 - 🏷️ Seal a paper: fingerprint a final PDF, get the exact ledger record and the command that publishes it
 - 🛡️ Clear failure states: "no seal on file", "seal broken", "ledger unreachable" and "record problem" are never confused
 
-![The answer sheet after checking the tampered copy against a seal](docs/screenshots/answer-sheet.png)
+<p align="center">
+  <img src="docs/media/seal-broken.gif" alt="Checking a tampered copy: red circles mark every character that differs from the sealed fingerprint and the verdict is Seal broken" width="900">
+  <br><sub>A tampered copy. Red circles mark the sealed answer for every character that changed: 59 of 64.</sub>
+</p>
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/seal-intact.png" alt="Seal intact verdict with receipt"></td>
+    <td width="50%"><img src="docs/screenshots/seal-broken.png" alt="Seal broken verdict with receipt"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Seal intact</sub></td>
+    <td align="center"><sub>Seal broken</sub></td>
+  </tr>
+</table>
 
 ---
 
@@ -183,7 +200,8 @@ Exam Guard
 │   ├── dev.mjs              local server that behaves like Vercel
 │   └── make_samples.py      rebuilds the sample PDFs
 ├── tests/                   node:test, pytest and Playwright suites
-├── docs/screenshots/
+├── docs/screenshots/        stills used in this README
+├── docs/media/              README GIFs, recorded from the running site
 ├── vercel.json              security headers
 ├── sample_exam.pdf          the file behind the first hackathon seal
 ├── record.json
