@@ -1,0 +1,12 @@
+# Only the site, the function and the samples are deployed.
+sample_exam.pdf
+record.json
+ExamGuard Presentation.pdf
+hash_check.py
+push_to_chain.js
+scripts/
+tests/
+docs/
+*.py
+.env*
+secrets.*

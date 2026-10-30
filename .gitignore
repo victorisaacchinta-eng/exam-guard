@@ -1,2 +1,11 @@
 node_modules/
 secrets.js
+secrets.cjs
+.env
+.env.*
+!.env.example
+.DS_Store
+__pycache__/
+.pytest_cache/
+test-results/
+.vercel
