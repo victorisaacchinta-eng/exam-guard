@@ -8,7 +8,7 @@
 
 [![Cardano](https://img.shields.io/badge/Built%20on-Cardano-0033AD?style=for-the-badge&logo=cardano&logoColor=white)](https://cardano.org/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow?style=for-the-badge&logo=javascript)](https://developer.mozilla.org/)
-[![Python](https://img.shields.io/badge/Python-3.x-blue?style=for-the-badge&logo=python)](https://python.org/)
+[![Python](https://img.shields.io/badge/Python-3.11%2B-blue?style=for-the-badge&logo=python)](https://python.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-Backend-green?style=for-the-badge&logo=node.js)](https://nodejs.org/)
 
 ### 🌐 Live Demo
@@ -131,7 +131,7 @@ Authentic ✅   or   Tampered ❌
 |------------|---------|
 | HTML | Frontend UI |
 | JavaScript | Client Logic |
-| Python | Hash Verification |
+| Python 3.11+ | Hash Verification (hash_check.py uses datetime.UTC) |
 | Node.js | Backend Services |
 | SHA-256 | Cryptographic Hashing |
 | Cardano | Immutable Storage |
